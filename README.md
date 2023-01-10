@@ -1,4 +1,3 @@
-<tt>
 
 ## flutter_demo
 
@@ -9,7 +8,7 @@ Flutter-based example project to learn responsive UIusing Google Calendar API
 
 #### Supported Platform
 <font color="6d9ee4" size="4">
-ㅤANDROIDㅤㅤIOSㅤㅤLINUXㅤㅤMACOSㅤㅤWEBㅤㅤWINDOWS
+ㅤANDROIDㅤㅤIOSㅤㅤLINUXㅤㅤMACOSㅤㅤWEBㅤㅤWINDOWSㅤ
 </font>
 
 #### Usage
@@ -22,6 +21,8 @@ $ flutter run
 
 #### Features
 
+<font style="font-family: monospace">
+
 - [Provider](https://pub.dev/packages/provider)
 - [Asynchronous programming](https://dart.dev/codelabs/async-await)
 - [Responsive UI](https://pub.dev/packages/responsive_framework)
@@ -32,9 +33,9 @@ $ flutter run
 - [Grid View](https://api.flutter.dev/flutter/widgets/GridView-class.html)
 - [List View](https://api.flutter.dev/flutter/widgets/ListView-class.html)
 
+</font>
+
 ---
 
 #### Authors
 - [Deniz Lee](https://github.com/deniz-lee) (younggi.lee@sk.com)
-
-</tt>

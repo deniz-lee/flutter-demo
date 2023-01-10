@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
+import 'package:flutter_demo/widget/grid_widget.dart';
 import 'package:provider/provider.dart';
 
 class CalendarPage extends StatelessWidget {
@@ -16,29 +17,14 @@ class CalendarPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Calendar App Bar'),
       ),
-      body: Center(
-        child: Container(child: Consumer<CalendarProvider>(
-          builder: (context, provider, child) {
-            return Text(
-              "Count: ${_calendarProvider?.count}",
-              style: const TextStyle(fontSize: 50),
-            );
-          },
-        )),
-      ),
+      body: const GridWidget(),
       floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           IconButton(
-            icon: const Icon(CupertinoIcons.add),
+            icon: const Icon(CupertinoIcons.add_circled),
             onPressed: () {
               _calendarProvider?.add();
-            },
-          ),
-          IconButton(
-            icon: const Icon(CupertinoIcons.delete),
-            onPressed: () {
-              _calendarProvider?.minus();
             },
           )
         ],

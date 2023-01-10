@@ -1,16 +1,40 @@
-# flutter_demo
+<tt>
 
-A new Flutter project.
+## flutter_demo
 
-## Getting Started
+--- 
+Flutter-based example project to learn responsive UIusing Google Calendar API
 
-This project is a starting point for a Flutter application.
+--- 
 
-A few resources to get you started if this is your first Flutter project:
+#### Supported Platform
+<font color="6d9ee4" size="4">
+ㅤANDROIDㅤㅤIOSㅤㅤLINUXㅤㅤMACOSㅤㅤWEBㅤㅤWINDOWS
+</font>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+#### Usage
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+~~~
+$ git clone https://github.com/deniz-lee/flutter-demo.git
+$ cd flutter-demo/app/
+$ flutter run
+~~~
+
+#### Features
+
+- [Provider](https://pub.dev/packages/provider)
+- [Asynchronous programming](https://dart.dev/codelabs/async-await)
+- [Responsive UI](https://pub.dev/packages/responsive_framework)
+- [Google Calendar](https://pub.dev/documentation/googleapis/latest/calendar.v3/calendar.v3-library.html)
+- [Google Sign-In](https://pub.dev/packages/google_sign_in)
+- [Flutter Flow](https://flutterflow.io/)
+- [Page View](https://api.flutter.dev/flutter/widgets/PageView-class.html)
+- [Grid View](https://api.flutter.dev/flutter/widgets/GridView-class.html)
+- [List View](https://api.flutter.dev/flutter/widgets/ListView-class.html)
+
+---
+
+#### Authors
+- [Deniz Lee](https://github.com/deniz-lee) (younggi.lee@sk.com)
+
+</tt>

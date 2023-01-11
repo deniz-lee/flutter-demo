@@ -19,12 +19,15 @@ class GridCell extends StatelessWidget {
               width: 0.1,
             )),
         child: Container(
-          alignment: Alignment.topRight,
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Text(
-            _dateTime.day.toString(),
-            style: TextStyle(color: textColor, fontSize: 10),
-          ),
-        ));
+            alignment: Alignment.topRight,
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Column(
+              children: [
+                Text(
+                  _dateTime.day.toString(),
+                  style: TextStyle(color: textColor, fontSize: 10),
+                ),
+              ],
+            )));
   }
 }

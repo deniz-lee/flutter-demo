@@ -14,8 +14,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # pattern
+  # flutter
   provider: ^6.0.5
+  intl: ^0.17.0
 
   # facilities
   url_launcher: ^6.1.7

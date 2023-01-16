@@ -5,9 +5,14 @@ import 'package:flutter_demo/widget/calendar_app_bar.dart';
 import 'package:flutter_demo/widget/grid_widget.dart';
 import 'package:provider/provider.dart';
 
-class CalendarPage extends StatelessWidget {
-  CalendarPage({Key? key}) : super(key: key);
+class CalendarPage extends StatefulWidget {
+  const CalendarPage({Key? key}) : super(key: key);
 
+  @override
+  State<CalendarPage> createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
   late CalendarProvider? _calendarProvider;
 
   @override
@@ -21,9 +26,9 @@ class CalendarPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           IconButton(
-            icon: const Icon(CupertinoIcons.add_circled),
+            icon: const Icon(CupertinoIcons.refresh_circled),
             onPressed: () {
-              _calendarProvider?.add();
+              _calendarProvider?.update();
             },
           )
         ],

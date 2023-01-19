@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
-import 'package:flutter_demo/widget/calendar_app_bar.dart';
-import 'package:flutter_demo/widget/grid_widget.dart';
+import 'package:flutter_demo/widget/monthly/grid_widget.dart';
+import 'package:flutter_demo/widget/monthly/page_app_bar.dart' as Monthly;
 import 'package:provider/provider.dart';
 
-class CalendarPage extends StatefulWidget {
-  const CalendarPage({Key? key}) : super(key: key);
+class MonthlyPage extends StatefulWidget {
+  const MonthlyPage({Key? key}) : super(key: key);
 
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
+  State<MonthlyPage> createState() => _MonthlyPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
+class _MonthlyPageState extends State<MonthlyPage> {
   late CalendarProvider? _calendarProvider;
 
   @override
@@ -20,7 +20,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _calendarProvider = Provider.of<CalendarProvider>(context);
 
     return Scaffold(
-      appBar: CalendarAppBar(DateTime.now()),
+      appBar: Monthly.PageAppBar(DateTime.now()),
       body: const GridWidget(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,

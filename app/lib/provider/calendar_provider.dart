@@ -4,14 +4,18 @@ import 'package:flutter_demo/model/constants.dart' as Constants;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/auth_io.dart';
+import 'package:intl/intl.dart';
 
 class CalendarProvider extends ChangeNotifier {
   GoogleSignIn? _googleSignIn;
   GoogleSignInAccount? _googleAccount;
   CalendarApi? _calendarApi;
   CalendarList? _calendarList;
+  late Map<String, List<Event>?> _events = {};
 
   CalendarList? get calendarList => _calendarList;
+
+  Map<String, List<Event>?> get events => _events;
 
   CalendarProvider(BuildContext context);
 
@@ -38,6 +42,7 @@ class CalendarProvider extends ChangeNotifier {
   }
 
   Future<List<Event>> eventsForCalendarId(String? id) async {
+    print("[CalenderProvider] eventsForCalendarId");
     if (id == null || id.isEmpty) {
       return [];
     }
@@ -98,7 +103,12 @@ class CalendarProvider extends ChangeNotifier {
     //   return;
     // }
     _calendarList = CalendarList(items: [CalendarListEntry(id: "dummy")]);
-    notifyListeners();
+    String? calenderId = calendarList?.items?.first.id;
+    Future<List<Event>>? calendarEvents = eventsForCalendarId(calenderId);
+    calendarEvents?.then((List<Event> events) {
+      _events = reorderCalendarEventsByDateTime(events);
+      notifyListeners();
+    });
     // Future<CalendarList?> calendarList = getCalenderList(_calendarApi!);
     // calendarList.then((CalendarList? calendarList) {
     //   _calendarList = calendarList;
@@ -106,5 +116,22 @@ class CalendarProvider extends ChangeNotifier {
     // }).catchError((error) {
     //   print(error);
     // });
+  }
+
+  Map<String, List<Event>?> reorderCalendarEventsByDateTime(
+      List<Event> events) {
+    Map<String, List<Event>?> result = {};
+    for (Event event in events) {
+      DateTime? startTime = event.start?.dateTime;
+      if (startTime == null) continue;
+
+      String formattedDate = DateFormat('yyyy-MM-dd').format(startTime);
+      List<Event>? events = result[formattedDate];
+      if (events == null) {
+        result[formattedDate] = [];
+      }
+      result[formattedDate]?.add(event);
+    }
+    return result;
   }
 }

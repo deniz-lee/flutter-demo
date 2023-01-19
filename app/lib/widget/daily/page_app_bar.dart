@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
+class PageAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   final Size preferredSize = const Size.fromHeight(50.0);
 
   final DateTime? _dateTime;
 
-  const CalendarAppBar(this._dateTime, {super.key});
+  const PageAppBar(this._dateTime, {super.key});
 
   @override
   Widget build(BuildContext context) {

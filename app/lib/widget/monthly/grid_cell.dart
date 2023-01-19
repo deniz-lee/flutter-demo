@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/widget/event_cell.dart';
+import 'package:flutter_demo/widget/monthly/event_cell.dart';
 import 'package:googleapis/calendar/v3.dart' as v3;
 
 class GridCell extends StatelessWidget {

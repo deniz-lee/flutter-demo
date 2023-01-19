@@ -17,15 +17,13 @@ class GridWidget extends StatefulWidget {
 class _GridWidgetState extends State<GridWidget> {
   late int _length;
   late ScrollController _controller;
-  late CalendarProvider? _calendarProvider;
-  late Map<String, List<Event>?> _events;
 
   @override
   void initState() {
+    print("[GridWidget] initState");
     super.initState();
 
     _length = Constants.CALENDAR_GRID_CNT;
-    _events = {};
     _controller = ScrollController();
     _controller.addListener(() {
       if (_controller.hasClients) {
@@ -46,7 +44,7 @@ class _GridWidgetState extends State<GridWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _calendarProvider = Provider.of<CalendarProvider>(context);
+    print("[GridWidget] build");
 
     return Scaffold(
       body: GridView.builder(
@@ -56,19 +54,11 @@ class _GridWidgetState extends State<GridWidget> {
             crossAxisCount: 7,
           ),
           itemBuilder: (context, index) {
-            String? calenderId =
-                _calendarProvider?.calendarList?.items?.first.id;
-            Future<List<Event>>? calendarEvents =
-                _calendarProvider?.eventsForCalendarId(calenderId);
-            calendarEvents?.then((List<Event> events) {
-              setState(() {
-                _events = reorderCalendarEventsByDateTime(events);
-              });
-            });
             DateTime startDate = DateTime(DateTime.now().year, 1, 1);
             final targetDate = startDate.add(Duration(days: index));
             String formattedDate = DateFormat('yyyy-MM-dd').format(targetDate);
-            List<Event>? events = _events[formattedDate];
+            List<Event>? events =
+                Provider.of<CalendarProvider>(context).events[formattedDate];
             if (events != null) {
               return Center(child: GridCell(targetDate, events));
             }

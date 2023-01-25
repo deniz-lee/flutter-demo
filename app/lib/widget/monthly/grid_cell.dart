@@ -15,13 +15,35 @@ class GridCell extends StatelessWidget {
     if (_dateTime.weekday == DateTime.saturday) textColor = Colors.blueAccent;
 
     List<Widget> children = [];
+    List<Widget> stackChildren = [];
+
+    DateTime now = DateTime.now();
+    if (_dateTime.year == now.year &&
+        _dateTime.month == now.month &&
+        _dateTime.day == now.day) {
+      stackChildren.add(Container(
+        width: 20,
+        height: 20,
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        decoration: BoxDecoration(
+            color: Colors.yellow,
+            borderRadius: BorderRadius.circular(20)),
+      ));
+    }
+
+    stackChildren.add(Container(
+      width: 15,
+      margin: const EdgeInsets.fromLTRB(2.5, 2.5, 0, 0),
+      alignment: Alignment.center,
+      child: Text(
+        _dateTime.day.toString(),
+        style: TextStyle(color: textColor, fontSize: 10),
+      ),
+    ));
     children.add(Container(
         alignment: Alignment.topLeft,
         padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
-        child: Text(
-          _dateTime.day.toString(),
-          style: TextStyle(color: textColor, fontSize: 10),
-        )));
+        child: Stack(children: stackChildren)));
 
     List<v3.Event> events = _events ?? [];
     for (v3.Event event in events) {

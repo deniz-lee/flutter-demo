@@ -20,7 +20,6 @@ class _GridWidgetState extends State<GridWidget> {
 
   @override
   void initState() {
-    print("[GridWidget] initState");
     super.initState();
 
     _length = Constants.CALENDAR_GRID_CNT;
@@ -71,7 +70,7 @@ class _GridWidgetState extends State<GridWidget> {
       List<Event> events) {
     Map<String, List<Event>?> result = {};
     for (Event event in events) {
-      DateTime? startTime = event.start?.dateTime;
+      DateTime? startTime = event.start?.dateTime ?? event.start?.date;
       if (startTime == null) continue;
 
       String formattedDate = DateFormat('yyyy-MM-dd').format(startTime);

@@ -13,8 +13,6 @@ class CalendarProvider extends ChangeNotifier {
   CalendarList? _calendarList;
   late Map<String, List<Event>?> _events = {};
 
-  CalendarList? get calendarList => _calendarList;
-
   Map<String, List<Event>?> get events => _events;
 
   CalendarProvider(BuildContext context);
@@ -46,6 +44,84 @@ class CalendarProvider extends ChangeNotifier {
     if (id == null || id.isEmpty) {
       return [];
     }
+    Events? events = await _calendarApi?.events.list(id);
+    return events?.items ?? [];
+  }
+
+  update() {
+    if (Constants.CALENDAR_DUMMY_DATASOURCE) {
+      updateWithDummyData();
+      return;
+    }
+    if (_googleAccount == null) {
+      Future<GoogleSignInAccount?> account = getGoogleSignInAccount();
+      account.then((GoogleSignInAccount? account) {
+        _googleAccount = account;
+        update();
+      }).catchError((error) {
+        print(error);
+      });
+      return;
+    }
+    if (_calendarApi == null) {
+      Future<CalendarApi> calendarApi = getCalendarApi();
+      calendarApi.then((CalendarApi calendarApi) {
+        _calendarApi = calendarApi;
+        update();
+      }).catchError((error) {
+        print(error);
+      });
+      return;
+    }
+    if (_calendarList == null) {
+      Future<CalendarList?> calendarList = getCalenderList(_calendarApi!);
+      calendarList.then((CalendarList? calendarList) {
+        _calendarList = calendarList;
+        update();
+      }).catchError((error) {
+        print(error);
+      });
+      return;
+    }
+    String? calenderId = _calendarList?.items?[2].id;
+    Future<List<Event>>? calendarEvents = eventsForCalendarId(calenderId);
+    calendarEvents?.then((List<Event> events) {
+      _events = reorderCalendarEventsByDateTime(events);
+      for (Event event in events) {
+        print("${event.summary.toString()}, [${event.start?.date.toString()}");
+      }
+      notifyListeners();
+    });
+  }
+
+  Map<String, List<Event>?> reorderCalendarEventsByDateTime(
+      List<Event> events) {
+    Map<String, List<Event>?> result = {};
+    for (Event event in events) {
+      DateTime? startTime = event.start?.dateTime ?? event.start?.date;
+      if (startTime == null) continue;
+
+      String formattedDate = DateFormat('yyyy-MM-dd').format(startTime);
+      List<Event>? events = result[formattedDate];
+      if (events == null) {
+        result[formattedDate] = [];
+      }
+      result[formattedDate]?.add(event);
+    }
+    return result;
+  }
+}
+
+extension DummyProvider on CalendarProvider {
+  updateWithDummyData() {
+    Future<List<Event>>? calendarEvents = dummyEventsForCalendarId();
+    calendarEvents?.then((List<Event> events) {
+      _events = reorderCalendarEventsByDateTime(events);
+      notifyListeners();
+    });
+  }
+
+  Future<List<Event>> dummyEventsForCalendarId() async {
     return [
       Event(
           start: EventDateTime(
@@ -62,12 +138,20 @@ class CalendarProvider extends ChangeNotifier {
           summary: "event2 1h"),
       Event(
           start: EventDateTime(
-            dateTime: DateTime.parse('2023-01-03 16:00:00'),
+            dateTime: DateTime.parse('2023-01-25 16:00:00'),
           ),
           end: EventDateTime(
-            dateTime: DateTime.parse('2023-01-03 18:00:00'),
+            dateTime: DateTime.parse('2023-01-25 18:00:00'),
           ),
           summary: "event3 2h"),
+      Event(
+          start: EventDateTime(
+            dateTime: DateTime.parse('2023-01-25 12:00:00'),
+          ),
+          end: EventDateTime(
+            dateTime: DateTime.parse('2023-01-25 15:00:00'),
+          ),
+          summary: "event4 3h"),
       Event(
           start: EventDateTime(
             dateTime: DateTime.parse('2023-02-20 16:00:00'),
@@ -75,63 +159,7 @@ class CalendarProvider extends ChangeNotifier {
           end: EventDateTime(
             dateTime: DateTime.parse('2023-02-20 17:00:00'),
           ),
-          summary: "event4 1h"),
+          summary: "event5 1h"),
     ];
-    // Events? events = await _calendarApi?.events.list(id);
-    // return events?.items ?? [];
-  }
-
-  update() {
-    // if (_googleAccount == null) {
-    //   Future<GoogleSignInAccount?> account = getGoogleSignInAccount();
-    //   account.then((GoogleSignInAccount? account) {
-    //     _googleAccount = account;
-    //     update();
-    //   }).catchError((error) {
-    //     print(error);
-    //   });
-    //   return;
-    // }
-    // if (_calendarApi == null) {
-    //   Future<CalendarApi> calendarApi = getCalendarApi();
-    //   calendarApi.then((CalendarApi calendarApi) {
-    //     _calendarApi = calendarApi;
-    //     update();
-    //   }).catchError((error) {
-    //     print(error);
-    //   });
-    //   return;
-    // }
-    _calendarList = CalendarList(items: [CalendarListEntry(id: "dummy")]);
-    String? calenderId = calendarList?.items?.first.id;
-    Future<List<Event>>? calendarEvents = eventsForCalendarId(calenderId);
-    calendarEvents?.then((List<Event> events) {
-      _events = reorderCalendarEventsByDateTime(events);
-      notifyListeners();
-    });
-    // Future<CalendarList?> calendarList = getCalenderList(_calendarApi!);
-    // calendarList.then((CalendarList? calendarList) {
-    //   _calendarList = calendarList;
-    //   notifyListeners();
-    // }).catchError((error) {
-    //   print(error);
-    // });
-  }
-
-  Map<String, List<Event>?> reorderCalendarEventsByDateTime(
-      List<Event> events) {
-    Map<String, List<Event>?> result = {};
-    for (Event event in events) {
-      DateTime? startTime = event.start?.dateTime;
-      if (startTime == null) continue;
-
-      String formattedDate = DateFormat('yyyy-MM-dd').format(startTime);
-      List<Event>? events = result[formattedDate];
-      if (events == null) {
-        result[formattedDate] = [];
-      }
-      result[formattedDate]?.add(event);
-    }
-    return result;
   }
 }

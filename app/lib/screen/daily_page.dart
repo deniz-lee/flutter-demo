@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
-import 'package:flutter_demo/widget/daily/list_widget.dart';
-import 'package:flutter_demo/widget/daily/page_app_bar.dart' as Daily;
+import 'package:flutter_demo/widget/daily/pager_widget.dart';
 import 'package:provider/provider.dart';
 
 class DailyPage extends StatefulWidget {
@@ -20,8 +19,7 @@ class _DailyPageState extends State<DailyPage> {
     _calendarProvider = Provider.of<CalendarProvider>(context);
 
     return Scaffold(
-      appBar: Daily.PageAppBar(DateTime.now()),
-      body: const ListWidget(),
+      body: const PagerWidget(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

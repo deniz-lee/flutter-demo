@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/widget/daily/list_widget.dart';
+import 'package:flutter_demo/widget/daily/scroll_widget.dart';
 
 class PagerWidget extends StatefulWidget {
   const PagerWidget({super.key});
@@ -29,12 +29,13 @@ class _PagerWidgetState extends State<PagerWidget> {
   @override
   Widget build(BuildContext context) {
     DateTime startDate = DateTime(2023, 1, 1, 0);
+
     return PageView.builder(
         controller: _controller,
         itemCount: 365,
         itemBuilder: (BuildContext context, int index) {
           final targetDate = startDate.add(Duration(days: index));
-          return ListWidget(targetDate);
+          return ScrollWidget(targetDate);
         });
   }
 }

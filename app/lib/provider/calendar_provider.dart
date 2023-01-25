@@ -138,7 +138,7 @@ extension DummyProvider on CalendarProvider {
           summary: "event2 1h"),
       Event(
           start: EventDateTime(
-            dateTime: DateTime.parse('2023-01-25 16:00:00'),
+            dateTime: DateTime.parse('2023-01-25 16:20:00'),
           ),
           end: EventDateTime(
             dateTime: DateTime.parse('2023-01-25 18:00:00'),
@@ -146,10 +146,10 @@ extension DummyProvider on CalendarProvider {
           summary: "event3 2h"),
       Event(
           start: EventDateTime(
-            dateTime: DateTime.parse('2023-01-25 12:00:00'),
+            dateTime: DateTime.parse('2023-01-25 12:30:00'),
           ),
           end: EventDateTime(
-            dateTime: DateTime.parse('2023-01-25 15:00:00'),
+            dateTime: DateTime.parse('2023-01-25 15:45:00'),
           ),
           summary: "event4 3h"),
       Event(

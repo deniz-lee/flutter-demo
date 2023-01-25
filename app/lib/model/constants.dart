@@ -9,3 +9,4 @@ const bool CALENDAR_DUMMY_DATASOURCE = true;
 // Calender Widget Properties
 const int CALENDAR_GRID_CNT = 365;
 const int CALENDAR_LIST_CNT = 25;
+const double CALENDAR_LIST_ROW_HEIGHT = 60;

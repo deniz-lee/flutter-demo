@@ -1,7 +1,7 @@
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart' as Constants;
-import 'package:flutter_demo/plugin/google_sign_in_macos/google_sign_in_macos.dart';
+import 'package:flutter_demo/plugin/GoogleSignIn-macOS/google_sign_in_macos.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/auth_io.dart';

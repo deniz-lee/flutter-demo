@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/model/event.dart';
 import 'package:flutter_demo/widget/monthly/event_cell.dart';
-import 'package:googleapis/calendar/v3.dart' as v3;
 
 class GridCell extends StatelessWidget {
   final DateTime _dateTime;
-  final List<v3.Event>? _events;
+  final List<Event>? _events;
 
   const GridCell(this._dateTime, this._events, {super.key});
 
@@ -44,8 +44,8 @@ class GridCell extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
         child: Stack(children: stackChildren)));
 
-    List<v3.Event> events = _events ?? [];
-    for (v3.Event event in events) {
+    List<Event> events = _events ?? [];
+    for (Event event in events) {
       EventCell cell = EventCell(event);
       children.add(cell);
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/calendar/v3.dart' as v3;
+import 'package:flutter_demo/model/event.dart';
 
 class EventCell extends StatelessWidget {
-  final v3.Event _event;
+  final Event _event;
 
   const EventCell(this._event, {super.key});
 
@@ -19,7 +19,7 @@ class EventCell extends StatelessWidget {
             alignment: Alignment.bottomRight,
             padding: const EdgeInsets.fromLTRB(5, 0, 5, 2),
             child: Text(
-              _event.summary ?? "",
+              _event.event.summary ?? "",
               textAlign: TextAlign.right,
               style: const TextStyle(
                   color: Color.fromARGB(255, 131, 78, 151), fontSize: 12),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/calendar/v3.dart' as v3;
+import 'package:flutter_demo/model/event.dart';
 import 'package:intl/intl.dart';
 
 class EventCell extends StatelessWidget {
-  final v3.Event _event;
+  final Event _event;
 
   const EventCell(this._event, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    DateTime? start = _event.start?.dateTime ?? _event.start?.date;
+    DateTime? start = _event.event.start?.dateTime ?? _event.event.start?.date;
     String? formattedDate;
     if (start != null) {
       formattedDate = DateFormat("h:mm a").format(start);
@@ -40,7 +40,7 @@ class EventCell extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                   child: Text(
-                    _event.summary ?? "",
+                    _event.event.summary ?? "",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 131, 78, 151),

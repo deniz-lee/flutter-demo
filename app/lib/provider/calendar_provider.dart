@@ -1,6 +1,7 @@
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart' as Constants;
+import 'package:flutter_demo/model/event.dart' as Dao;
 import 'package:flutter_demo/plugin/GoogleSignIn-macOS/google_sign_in_macos.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
@@ -12,9 +13,9 @@ class CalendarProvider extends ChangeNotifier {
   GoogleSignInAccount? _googleAccount;
   CalendarApi? _calendarApi;
   CalendarList? _calendarList;
-  late Map<String, List<Event>?> _events = {};
+  late Map<String, List<Dao.Event>?> _events = {};
 
-  Map<String, List<Event>?> get events => _events;
+  Map<String, List<Dao.Event>?> get events => _events;
 
   CalendarProvider(BuildContext context);
 
@@ -85,30 +86,42 @@ class CalendarProvider extends ChangeNotifier {
       });
       return;
     }
-    String? calenderId = _calendarList?.items?[2].id;
-    Future<List<Event>>? calendarEvents = eventsForCalendarId(calenderId);
-    calendarEvents?.then((List<Event> events) {
+    collectAllEvents(_calendarList).then((List<Dao.Event> events) {
       _events = reorderCalendarEventsByDateTime(events);
-      for (Event event in events) {
-        print("${event.summary.toString()}, [${event.start?.date.toString()}");
+      for (Dao.Event dao in events) {
+        print("${dao.event.summary.toString()}, [${dao.calendarId}");
       }
       notifyListeners();
     });
   }
 
-  Map<String, List<Event>?> reorderCalendarEventsByDateTime(
-      List<Event> events) {
-    Map<String, List<Event>?> result = {};
-    for (Event event in events) {
-      DateTime? startTime = event.start?.dateTime ?? event.start?.date;
+  Future<List<Dao.Event>> collectAllEvents(CalendarList? calendarList) async {
+    List<Dao.Event> allEvents = [];
+    for (CalendarListEntry entry in _calendarList?.items ?? []) {
+      String? calenderId = entry.id;
+      List<Event>? events = await eventsForCalendarId(calenderId);
+
+      for (Event e in events) {
+        Dao.Event dao = Dao.Event(event: e, calendarId: calenderId);
+        allEvents.add(dao);
+      }
+    }
+    return allEvents;
+  }
+
+  Map<String, List<Dao.Event>?> reorderCalendarEventsByDateTime(
+      List<Dao.Event> events) {
+    Map<String, List<Dao.Event>?> result = {};
+    for (Dao.Event dao in events) {
+      DateTime? startTime = dao.event.start?.dateTime ?? dao.event.start?.date;
       if (startTime == null) continue;
 
       String formattedDate = DateFormat('yyyy-MM-dd').format(startTime);
-      List<Event>? events = result[formattedDate];
+      List<Dao.Event>? events = result[formattedDate];
       if (events == null) {
         result[formattedDate] = [];
       }
-      result[formattedDate]?.add(event);
+      result[formattedDate]?.add(dao);
     }
     return result;
   }
@@ -116,52 +129,62 @@ class CalendarProvider extends ChangeNotifier {
 
 extension DummyProvider on CalendarProvider {
   updateWithDummyData() {
-    Future<List<Event>>? calendarEvents = dummyEventsForCalendarId();
-    calendarEvents?.then((List<Event> events) {
+    Future<List<Dao.Event>>? calendarEvents = dummyEventsForCalendarId();
+    calendarEvents?.then((List<Dao.Event> events) {
       _events = reorderCalendarEventsByDateTime(events);
       notifyListeners();
     });
   }
 
-  Future<List<Event>> dummyEventsForCalendarId() async {
+  Future<List<Dao.Event>> dummyEventsForCalendarId() async {
     return [
-      Event(
-          start: EventDateTime(
-            date: DateTime.parse('2023-01-02 01:00:00'),
-          ),
-          summary: "event1 allDay"),
-      Event(
-          start: EventDateTime(
-            dateTime: DateTime.parse('2023-01-03 01:00:00'),
-          ),
-          end: EventDateTime(
-            dateTime: DateTime.parse('2023-01-03 02:00:00'),
-          ),
-          summary: "event2 1h"),
-      Event(
-          start: EventDateTime(
-            dateTime: DateTime.parse('2023-01-25 16:20:00'),
-          ),
-          end: EventDateTime(
-            dateTime: DateTime.parse('2023-01-25 18:00:00'),
-          ),
-          summary: "event3 2h"),
-      Event(
-          start: EventDateTime(
-            dateTime: DateTime.parse('2023-01-25 12:30:00'),
-          ),
-          end: EventDateTime(
-            dateTime: DateTime.parse('2023-01-25 15:45:00'),
-          ),
-          summary: "event4 3h"),
-      Event(
-          start: EventDateTime(
-            dateTime: DateTime.parse('2023-02-20 16:00:00'),
-          ),
-          end: EventDateTime(
-            dateTime: DateTime.parse('2023-02-20 17:00:00'),
-          ),
-          summary: "event5 1h"),
+      Dao.Event(
+          event: Event(
+              start: EventDateTime(
+                date: DateTime.parse('2023-01-02 01:00:00'),
+              ),
+              summary: "event1 allDay"),
+          calendarId: "dummy"),
+      Dao.Event(
+          event: Event(
+              start: EventDateTime(
+                dateTime: DateTime.parse('2023-01-03 01:00:00'),
+              ),
+              end: EventDateTime(
+                dateTime: DateTime.parse('2023-01-03 02:00:00'),
+              ),
+              summary: "event2 1h"),
+          calendarId: "dummy"),
+      Dao.Event(
+          event: Event(
+              start: EventDateTime(
+                dateTime: DateTime.parse('2023-01-25 16:20:00'),
+              ),
+              end: EventDateTime(
+                dateTime: DateTime.parse('2023-01-25 18:00:00'),
+              ),
+              summary: "event3 2h"),
+          calendarId: "dummy"),
+      Dao.Event(
+          event: Event(
+              start: EventDateTime(
+                dateTime: DateTime.parse('2023-01-25 12:30:00'),
+              ),
+              end: EventDateTime(
+                dateTime: DateTime.parse('2023-01-25 15:45:00'),
+              ),
+              summary: "event4 3h"),
+          calendarId: "dummy"),
+      Dao.Event(
+          event: Event(
+              start: EventDateTime(
+                dateTime: DateTime.parse('2023-02-20 16:00:00'),
+              ),
+              end: EventDateTime(
+                dateTime: DateTime.parse('2023-02-20 17:00:00'),
+              ),
+              summary: "event5 1h"),
+          calendarId: "dummy"),
     ];
   }
 }

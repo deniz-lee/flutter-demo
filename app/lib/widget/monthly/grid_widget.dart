@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart' as Constants;
+import 'package:flutter_demo/model/event.dart' as Dao;
 import 'package:flutter_demo/provider/calendar_provider.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:intl/intl.dart';
@@ -53,7 +54,7 @@ class _GridWidgetState extends State<GridWidget> {
             DateTime startDate = DateTime(DateTime.now().year, 1, 1);
             final targetDate = startDate.add(Duration(days: index));
             String formattedDate = DateFormat('yyyy-MM-dd').format(targetDate);
-            List<Event>? events =
+            List<Dao.Event>? events =
                 Provider.of<CalendarProvider>(context).events[formattedDate];
             if (events != null) {
               return Center(child: GridCell(targetDate, events));

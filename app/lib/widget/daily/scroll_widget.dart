@@ -1,12 +1,12 @@
 // ignore_for_file: library_prefixes
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart' as Constants;
+import 'package:flutter_demo/model/event.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
 import 'package:flutter_demo/widget/daily/event_cell.dart';
 import 'package:flutter_demo/widget/daily/hourly_divider.dart';
 import 'package:flutter_demo/widget/daily/page_app_bar.dart';
 import 'package:flutter_demo/widget/daily/today_indicator.dart';
-import 'package:googleapis/calendar/v3.dart' as Calendar;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -59,21 +59,21 @@ extension _EventExtension on _ScrollWidgetState {
   _addEventsIfNeeded(
       BoxConstraints constraints, DateTime startDate, List<Widget> parent) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(startDate);
-    List<Calendar.Event>? events =
+    List<Event>? events =
         Provider.of<CalendarProvider>(context).events[formattedDate];
     if (events == null) return;
 
     for (int i = 0; i < (events.length ?? 0); i++) {
-      Calendar.Event event = events[i];
+      Event event = events[i];
       Widget? eventCell = _eventCell(constraints, event);
       if (eventCell == null) continue;
       parent.add(eventCell);
     }
   }
 
-  Widget? _eventCell(BoxConstraints constraints, Calendar.Event event) {
-    DateTime? start = event.start?.dateTime ?? event.start?.date;
-    DateTime? end = event.end?.dateTime ?? event.end?.date;
+  Widget? _eventCell(BoxConstraints constraints, Event event) {
+    DateTime? start = event.event.start?.dateTime ?? event.event.start?.date;
+    DateTime? end = event.event.end?.dateTime ?? event.event.end?.date;
     if (start == null) return null;
     if (end == null) return null;
 

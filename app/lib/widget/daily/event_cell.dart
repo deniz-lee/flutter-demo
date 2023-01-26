@@ -32,7 +32,8 @@ class EventCell extends StatelessWidget {
                   child: Text(
                     formattedDate ?? "",
                     textAlign: TextAlign.left,
-                    style: const TextStyle(color: Color.fromARGB(255, 131, 78, 151), fontSize: 12),
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 131, 78, 151), fontSize: 12),
                   ),
                 ),
                 Container(

@@ -21,11 +21,19 @@ class ScrollWidget extends StatefulWidget {
 
 class _ScrollWidgetState extends State<ScrollWidget> {
   late DateTime _dateTime;
+  final ScrollController _scrollController = ScrollController(
+      initialScrollOffset: Constants.Static.CALENDAR_LIST_SCROLL_OFFSET,
+      keepScrollOffset: true);
 
   @override
   void initState() {
-    super.initState();
     _dateTime = widget._dateTime;
+    _scrollController.addListener(() {
+      if (_scrollController.hasClients) {
+        Constants.Static.CALENDAR_LIST_SCROLL_OFFSET = _scrollController.offset;
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -40,7 +48,9 @@ class _ScrollWidgetState extends State<ScrollWidget> {
       return Stack(children: children);
     });
     Widget scrollView = SingleChildScrollView(
-        scrollDirection: Axis.vertical, child: layoutBuilder);
+        scrollDirection: Axis.vertical,
+        controller: _scrollController,
+        child: layoutBuilder);
     return Scaffold(appBar: PageAppBar(_dateTime), body: scrollView);
   }
 }
@@ -83,7 +93,8 @@ extension _EventExtension on _ScrollWidgetState {
 extension _IndicatorExtension on _ScrollWidgetState {
   _addIndicator(
       BoxConstraints constraints, DateTime startDate, List<Widget> parent) {
-    int offset = startDate.hour * Duration.minutesPerHour + startDate.minute + 5;
+    int offset =
+        startDate.hour * Duration.minutesPerHour + startDate.minute + 5;
     Widget indicator = Positioned(
       top: offset.toDouble(),
       child: TodayIndicator(constraints),

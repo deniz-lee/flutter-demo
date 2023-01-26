@@ -20,8 +20,6 @@ class _GridWidgetState extends State<GridWidget> {
 
   @override
   void initState() {
-    super.initState();
-
     _length = Constants.CALENDAR_GRID_CNT;
     _controller = ScrollController();
     _controller.addListener(() {
@@ -33,6 +31,7 @@ class _GridWidgetState extends State<GridWidget> {
         }
       }
     });
+    super.initState();
   }
 
   @override
@@ -43,8 +42,6 @@ class _GridWidgetState extends State<GridWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("[GridWidget] build");
-
     return Scaffold(
       body: GridView.builder(
           controller: _controller,

@@ -13,7 +13,7 @@ class EventCell extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
       child: DecoratedBox(
           decoration: BoxDecoration(
-              color: Colors.lightBlueAccent,
+              color: const Color.fromARGB(170, 223, 201, 228),
               borderRadius: BorderRadius.circular(5)),
           child: Container(
             alignment: Alignment.bottomRight,
@@ -21,7 +21,8 @@ class EventCell extends StatelessWidget {
             child: Text(
               _event.summary ?? "",
               textAlign: TextAlign.right,
-              style: const TextStyle(color: Colors.white, fontSize: 11),
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 131, 78, 151), fontSize: 12),
             ),
           )),
     );

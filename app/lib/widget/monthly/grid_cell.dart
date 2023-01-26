@@ -26,8 +26,7 @@ class GridCell extends StatelessWidget {
         height: 20,
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(
-            color: Colors.yellow,
-            borderRadius: BorderRadius.circular(20)),
+            color: Colors.yellow, borderRadius: BorderRadius.circular(20)),
       ));
     }
 

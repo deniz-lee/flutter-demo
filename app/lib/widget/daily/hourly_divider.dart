@@ -18,13 +18,16 @@ class HourlyDivider extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(10, 5, 0, 0),
       child: Text(formattedDate,
           textAlign: TextAlign.right,
-          style: const TextStyle(fontSize: 10, color: Colors.black38)),
+          style: TextStyle(
+              fontSize: 9,
+              color: Theme.of(context).dividerColor,
+              fontWeight: FontWeight.w600)),
     ));
     children.add(Container(
       margin: const EdgeInsets.fromLTRB(10, 5, 0, 0),
       height: 1,
       width: _constraints.maxWidth - 60,
-      color: Colors.black12,
+      color: Theme.of(context).dividerColor,
     ));
     return Container(
       height: _height,

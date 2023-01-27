@@ -9,7 +9,7 @@ class AutomaticKeepAliveScreen extends StatefulWidget {
   final Widget child;
 
   @override
-  _AutomaticKeepAliveScreenState createState() =>
+  State<AutomaticKeepAliveScreen> createState() =>
       _AutomaticKeepAliveScreenState();
 }
 

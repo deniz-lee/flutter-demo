@@ -1,8 +1,10 @@
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/model/constants.dart' as Constants;
-import 'package:flutter_demo/model/event.dart' as Dao;
+import 'package:flutter_demo/model/constants.dart';
+import 'package:flutter_demo/model/event.dart';
 import 'package:flutter_demo/plugin/GoogleSignIn-macOS/google_sign_in_macos.dart';
+import 'package:flutter_demo/tools/extentions.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/auth_io.dart';
@@ -13,16 +15,16 @@ class CalendarProvider extends ChangeNotifier {
   GoogleSignInAccount? _googleAccount;
   CalendarApi? _calendarApi;
   CalendarList? _calendarList;
-  late Map<String, List<Dao.Event>?> _events = {};
+  late Map<String, List<EventModel>?> _events = {};
 
-  Map<String, List<Dao.Event>?> get events => _events;
+  Map<String, List<EventModel>?> get events => _events;
 
   CalendarProvider(BuildContext context);
 
   Future<GoogleSignInAccount?> getGoogleSignInAccount() async {
     _googleSignIn ??= GoogleSignIn(
       scopes: <String>[CalendarApi.calendarReadonlyScope],
-      clientId: Constants.GOOGLE_API_CLIENT_ID,
+      clientId: googleClientId_,
     );
     GoogleSignInMacOS.registerWith();
     final GoogleSignInAccount? googleUser = await _googleSignIn?.signIn();
@@ -43,7 +45,6 @@ class CalendarProvider extends ChangeNotifier {
   }
 
   Future<List<Event>> eventsForCalendarId(String? id) async {
-    print("[CalenderProvider] eventsForCalendarId");
     if (id == null || id.isEmpty) {
       return [];
     }
@@ -52,7 +53,7 @@ class CalendarProvider extends ChangeNotifier {
   }
 
   update() {
-    if (Constants.CALENDAR_DUMMY_DATASOURCE) {
+    if (useDummyDataSource_) {
       updateWithDummyData();
       return;
     }
@@ -62,7 +63,9 @@ class CalendarProvider extends ChangeNotifier {
         _googleAccount = account;
         update();
       }).catchError((error) {
-        print(error);
+        if (kDebugMode) {
+          print(error);
+        }
       });
       return;
     }
@@ -72,7 +75,9 @@ class CalendarProvider extends ChangeNotifier {
         _calendarApi = calendarApi;
         update();
       }).catchError((error) {
-        print(error);
+        if (kDebugMode) {
+          print(error);
+        }
       });
       return;
     }
@@ -82,46 +87,54 @@ class CalendarProvider extends ChangeNotifier {
         _calendarList = calendarList;
         update();
       }).catchError((error) {
-        print(error);
+        if (kDebugMode) {
+          print(error);
+        }
       });
       return;
     }
-    collectAllEvents(_calendarList).then((List<Dao.Event> events) {
+    collectAllEvents(_calendarList).then((List<EventModel> events) {
       _events = reorderCalendarEventsByDateTime(events);
-      for (Dao.Event dao in events) {
-        print("${dao.event.summary.toString()}, [${dao.calendarId}");
-      }
       notifyListeners();
     });
   }
 
-  Future<List<Dao.Event>> collectAllEvents(CalendarList? calendarList) async {
-    List<Dao.Event> allEvents = [];
-    for (CalendarListEntry entry in _calendarList?.items ?? []) {
+  Future<List<EventModel>> collectAllEvents(CalendarList? calendarList) async {
+    List<EventModel> models = [];
+    List<CalendarListEntry> calendars = _calendarList?.items ?? [];
+    for (int i = 0; i < calendars.length; i++) {
+      CalendarListEntry? entry = calendars[i];
       String? calenderId = entry.id;
       List<Event>? events = await eventsForCalendarId(calenderId);
 
       for (Event e in events) {
-        Dao.Event dao = Dao.Event(event: e, calendarId: calenderId);
-        allEvents.add(dao);
+        EventModel model = EventModel(
+            event: e,
+            calendarId: calenderId,
+            colorType: CalendarColorType.values[i]);
+        model.parseToKST();
+        models.add(model);
       }
     }
-    return allEvents;
+    return models;
   }
 
-  Map<String, List<Dao.Event>?> reorderCalendarEventsByDateTime(
-      List<Dao.Event> events) {
-    Map<String, List<Dao.Event>?> result = {};
-    for (Dao.Event dao in events) {
-      DateTime? startTime = dao.event.start?.dateTime ?? dao.event.start?.date;
-      if (startTime == null) continue;
+  Map<String, List<EventModel>?> reorderCalendarEventsByDateTime(
+      List<EventModel> events) {
+    Map<String, List<EventModel>?> result = {};
+    for (EventModel model in events) {
+      DateTime? start = model.event.start?.dateTime ?? model.event.start?.date;
+      if (start?.timeZoneName.compareTo("KST") != 0) {
+        start = start?.toKST();
+      }
+      if (start == null) continue;
 
-      String formattedDate = DateFormat('yyyy-MM-dd').format(startTime);
-      List<Dao.Event>? events = result[formattedDate];
+      String formattedDate = DateFormat('yyyy-MM-dd').format(start);
+      List<EventModel>? events = result[formattedDate];
       if (events == null) {
         result[formattedDate] = [];
       }
-      result[formattedDate]?.add(dao);
+      result[formattedDate]?.add(model);
     }
     return result;
   }
@@ -129,23 +142,24 @@ class CalendarProvider extends ChangeNotifier {
 
 extension DummyProvider on CalendarProvider {
   updateWithDummyData() {
-    Future<List<Dao.Event>>? calendarEvents = dummyEventsForCalendarId();
-    calendarEvents?.then((List<Dao.Event> events) {
+    Future<List<EventModel>>? calendarEvents = dummyEventsForCalendarId();
+    calendarEvents.then((List<EventModel> events) {
       _events = reorderCalendarEventsByDateTime(events);
-      notifyListeners();
+      // notifyListeners();
     });
   }
 
-  Future<List<Dao.Event>> dummyEventsForCalendarId() async {
+  Future<List<EventModel>> dummyEventsForCalendarId() async {
     return [
-      Dao.Event(
+      EventModel(
           event: Event(
               start: EventDateTime(
                 date: DateTime.parse('2023-01-02 01:00:00'),
               ),
               summary: "event1 allDay"),
-          calendarId: "dummy"),
-      Dao.Event(
+          calendarId: "dummy",
+          colorType: CalendarColorType.green),
+      EventModel(
           event: Event(
               start: EventDateTime(
                 dateTime: DateTime.parse('2023-01-03 01:00:00'),
@@ -154,8 +168,9 @@ extension DummyProvider on CalendarProvider {
                 dateTime: DateTime.parse('2023-01-03 02:00:00'),
               ),
               summary: "event2 1h"),
-          calendarId: "dummy"),
-      Dao.Event(
+          calendarId: "dummy",
+          colorType: CalendarColorType.orange),
+      EventModel(
           event: Event(
               start: EventDateTime(
                 dateTime: DateTime.parse('2023-01-25 16:20:00'),
@@ -164,8 +179,9 @@ extension DummyProvider on CalendarProvider {
                 dateTime: DateTime.parse('2023-01-25 18:00:00'),
               ),
               summary: "event3 2h"),
-          calendarId: "dummy"),
-      Dao.Event(
+          calendarId: "dummy",
+          colorType: CalendarColorType.blue),
+      EventModel(
           event: Event(
               start: EventDateTime(
                 dateTime: DateTime.parse('2023-01-25 12:30:00'),
@@ -174,8 +190,9 @@ extension DummyProvider on CalendarProvider {
                 dateTime: DateTime.parse('2023-01-25 15:45:00'),
               ),
               summary: "event4 3h"),
-          calendarId: "dummy"),
-      Dao.Event(
+          calendarId: "dummy",
+          colorType: CalendarColorType.yellow),
+      EventModel(
           event: Event(
               start: EventDateTime(
                 dateTime: DateTime.parse('2023-02-20 16:00:00'),
@@ -184,7 +201,8 @@ extension DummyProvider on CalendarProvider {
                 dateTime: DateTime.parse('2023-02-20 17:00:00'),
               ),
               summary: "event5 1h"),
-          calendarId: "dummy"),
+          calendarId: "dummy",
+          colorType: CalendarColorType.red),
     ];
   }
 }

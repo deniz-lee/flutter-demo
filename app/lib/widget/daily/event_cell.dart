@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/event.dart';
+import 'package:flutter_demo/tools/extentions.dart';
 import 'package:intl/intl.dart';
 
 class EventCell extends StatelessWidget {
-  final Event _event;
+  final EventModel _event;
 
   const EventCell(this._event, {super.key});
 
@@ -19,7 +20,7 @@ class EventCell extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
       child: DecoratedBox(
           decoration: BoxDecoration(
-              color: const Color.fromARGB(170, 223, 201, 228),
+              color: CalendarColors.background(context, _event.colorType),
               borderRadius: BorderRadius.circular(5)),
           child: Container(
             alignment: Alignment.topLeft,
@@ -32,8 +33,10 @@ class EventCell extends StatelessWidget {
                   child: Text(
                     formattedDate ?? "",
                     textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 131, 78, 151), fontSize: 12),
+                    style: TextStyle(
+                        color:
+                            CalendarColors.summary(context, _event.colorType),
+                        fontSize: 12),
                   ),
                 ),
                 Container(
@@ -42,8 +45,8 @@ class EventCell extends StatelessWidget {
                   child: Text(
                     _event.event.summary ?? "",
                     textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 131, 78, 151),
+                    style: TextStyle(
+                        color: CalendarColors.title(context, _event.colorType),
                         fontSize: 13,
                         fontWeight: FontWeight.bold),
                   ),

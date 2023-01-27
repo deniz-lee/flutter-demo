@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/event.dart';
+import 'package:flutter_demo/tools/extentions.dart';
 import 'package:flutter_demo/widget/monthly/event_cell.dart';
 
 class GridCell extends StatelessWidget {
   final DateTime _dateTime;
-  final List<Event>? _events;
+  final List<EventModel>? _events;
 
   const GridCell(this._dateTime, this._events, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = Colors.black;
-    if (_dateTime.weekday == DateTime.sunday) textColor = Colors.redAccent;
-    if (_dateTime.weekday == DateTime.saturday) textColor = Colors.blueAccent;
-
+    Color textColor =
+        Theme.of(context).textTheme.bodyText1?.color ?? Colors.black;
+    if (_dateTime.weekday == DateTime.sunday) {
+      textColor = CalendarColors.summary(context, CalendarColorType.red);
+    }
+    if (_dateTime.weekday == DateTime.saturday) {
+      textColor = CalendarColors.summary(context, CalendarColorType.blue);
+    }
     List<Widget> children = [];
     List<Widget> stackChildren = [];
 
@@ -24,41 +29,45 @@ class GridCell extends StatelessWidget {
       stackChildren.add(Container(
         width: 20,
         height: 20,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(
-            color: Colors.yellow, borderRadius: BorderRadius.circular(20)),
+            color: Theme.of(context).highlightColor,
+            borderRadius: BorderRadius.circular(20)),
       ));
     }
 
     stackChildren.add(Container(
       width: 15,
-      margin: const EdgeInsets.fromLTRB(2.5, 2.5, 0, 0),
+      margin: const EdgeInsets.only(left: 2.5, top: 2.5),
       alignment: Alignment.center,
       child: Text(
         _dateTime.day.toString(),
-        style: TextStyle(color: textColor, fontSize: 10),
+        style: TextStyle(
+          color: textColor,
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     ));
     children.add(Container(
         alignment: Alignment.topLeft,
-        padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
+        padding: const EdgeInsets.only(left: 10, bottom: 5),
         child: Stack(children: stackChildren)));
 
-    List<Event> events = _events ?? [];
-    for (Event event in events) {
+    List<EventModel> events = _events ?? [];
+    for (EventModel event in events) {
       EventCell cell = EventCell(event);
       children.add(cell);
     }
     return DecoratedBox(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).canvasColor,
             border: Border.all(
-              color: Colors.grey,
-              width: 0.1,
+              color: Theme.of(context).dividerColor,
+              width: 0.5,
             )),
         child: Container(
             alignment: Alignment.topRight,
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,

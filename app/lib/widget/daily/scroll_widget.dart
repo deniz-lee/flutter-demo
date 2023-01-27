@@ -1,6 +1,5 @@
-// ignore_for_file: library_prefixes
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/model/constants.dart' as Constants;
+import 'package:flutter_demo/model/constants.dart';
 import 'package:flutter_demo/model/event.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
 import 'package:flutter_demo/widget/daily/event_cell.dart';
@@ -22,7 +21,7 @@ class ScrollWidget extends StatefulWidget {
 class _ScrollWidgetState extends State<ScrollWidget> {
   late DateTime _dateTime;
   final ScrollController _scrollController = ScrollController(
-      initialScrollOffset: Constants.Static.CALENDAR_LIST_SCROLL_OFFSET,
+      initialScrollOffset: Static.dailyScrollOffset_,
       keepScrollOffset: true);
 
   @override
@@ -30,7 +29,7 @@ class _ScrollWidgetState extends State<ScrollWidget> {
     _dateTime = widget._dateTime;
     _scrollController.addListener(() {
       if (_scrollController.hasClients) {
-        Constants.Static.CALENDAR_LIST_SCROLL_OFFSET = _scrollController.offset;
+        Static.dailyScrollOffset_ = _scrollController.offset;
       }
     });
     super.initState();
@@ -59,19 +58,19 @@ extension _EventExtension on _ScrollWidgetState {
   _addEventsIfNeeded(
       BoxConstraints constraints, DateTime startDate, List<Widget> parent) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(startDate);
-    List<Event>? events =
+    List<EventModel>? events =
         Provider.of<CalendarProvider>(context).events[formattedDate];
     if (events == null) return;
 
-    for (int i = 0; i < (events.length ?? 0); i++) {
-      Event event = events[i];
+    for (int i = 0; i < events.length; i++) {
+      EventModel event = events[i];
       Widget? eventCell = _eventCell(constraints, event);
       if (eventCell == null) continue;
       parent.add(eventCell);
     }
   }
 
-  Widget? _eventCell(BoxConstraints constraints, Event event) {
+  Widget? _eventCell(BoxConstraints constraints, EventModel event) {
     DateTime? start = event.event.start?.dateTime ?? event.event.start?.date;
     DateTime? end = event.event.end?.dateTime ?? event.event.end?.date;
     if (start == null) return null;
@@ -107,10 +106,10 @@ extension _DividerExtension on _ScrollWidgetState {
   _addHourlyDivider(
       BoxConstraints constraints, DateTime startDate, List<Widget> parent) {
     List<Widget> children = [];
-    for (int i = 0; i < Constants.CALENDAR_LIST_CNT; i++) {
+    for (int i = 0; i < dailyItemCount_; i++) {
       final targetDate = startDate.add(Duration(hours: i));
-      double height = i < Constants.CALENDAR_LIST_CNT - 1
-          ? Constants.CALENDAR_LIST_ROW_HEIGHT
+      double height = i < dailyItemCount_ - 1
+          ? dailyItemHeight_
           : 20;
       Widget widget = HourlyDivider(constraints, targetDate, height);
       children.add(widget);

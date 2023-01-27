@@ -16,14 +16,14 @@ class PageAppBar extends StatelessWidget with PreferredSizeWidget {
 
     return AppBar(
       title: null,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       leadingWidth: 160,
       leading: Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
           child: Text(
             title,
-            style: const TextStyle(color: Colors.black, fontSize: 16),
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           )),
     );
   }

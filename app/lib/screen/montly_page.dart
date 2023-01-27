@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
 import 'package:flutter_demo/widget/monthly/grid_widget.dart';
-import 'package:flutter_demo/widget/monthly/page_app_bar.dart' as Monthly;
+import 'package:flutter_demo/widget/monthly/page_app_bar.dart';
 import 'package:provider/provider.dart';
 
 class MonthlyPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
     _calendarProvider = Provider.of<CalendarProvider>(context);
 
     return Scaffold(
-      appBar: Monthly.PageAppBar(DateTime.now()),
+      appBar: PageAppBar(DateTime.now()),
       body: const GridWidget(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,

@@ -1,5 +1,5 @@
 // Application Properties
-const double responsiveWidthDivergingPoint_ = 800;
+const double responsiveWidthDivergingPoint_ = 750;
 
 // Calendar Provider Properties
 const String googleClientId_ =

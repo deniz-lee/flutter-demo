@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
+import 'package:flutter_demo/widget/common/sign_in_button.dart';
 import 'package:flutter_demo/widget/monthly/grid_widget.dart';
 import 'package:flutter_demo/widget/monthly/page_app_bar.dart';
 import 'package:provider/provider.dart';
@@ -25,12 +25,9 @@ class _MonthlyPageState extends State<MonthlyPage> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          IconButton(
-            icon: const Icon(CupertinoIcons.refresh_circled),
-            onPressed: () {
-              _calendarProvider?.update();
-            },
-          )
+          SignInButton(() {
+            _calendarProvider?.update();
+          }),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

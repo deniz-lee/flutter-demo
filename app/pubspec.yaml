@@ -25,6 +25,7 @@ dependencies:
   # ux
   cupertino_icons: ^1.0.5
   scrollable_positioned_list: ^0.3.5
+  flutter_signin_button: ^2.0.0
 
   # googleapis
   google_sign_in: ^5.4.3

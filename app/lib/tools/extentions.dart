@@ -11,7 +11,7 @@ extension TimeZoneExtension on DateTime {
   }
 }
 
-enum CalendarColorType { blue, orange, green, yellow, red }
+enum CalendarColorType { red, orange, green, yellow, blue }
 
 extension CalendarColors on Colors {
   static Color background(BuildContext context, CalendarColorType? type) {

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
 import 'package:flutter_demo/widget/daily/pager_widget.dart';
+import 'package:flutter_demo/widget/common/sign_in_button.dart';
 import 'package:provider/provider.dart';
 
 class DailyPage extends StatefulWidget {
@@ -23,12 +23,9 @@ class _DailyPageState extends State<DailyPage> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          IconButton(
-            icon: const Icon(CupertinoIcons.refresh_circled),
-            onPressed: () {
-              _calendarProvider?.update();
-            },
-          )
+          SignInButton(() {
+            _calendarProvider?.update();
+          }),
         ],
       ),
     );

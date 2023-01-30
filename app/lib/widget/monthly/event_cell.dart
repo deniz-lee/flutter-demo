@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/event.dart';
-import 'package:flutter_demo/tools/extentions.dart';
+import 'package:flutter_demo/tools/extensions.dart';
 
 class EventCell extends StatelessWidget {
   final EventModel _event;

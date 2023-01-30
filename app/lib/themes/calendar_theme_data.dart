@@ -28,7 +28,7 @@ class CalendarThemeData {
       iconTheme: IconThemeData(color: colorScheme.onPrimary),
       canvasColor: colorScheme.background,
       scaffoldBackgroundColor: colorScheme.background,
-      highlightColor: Colors.transparent,
+      highlightColor: colorScheme.surfaceTint,
       focusColor: focusColor,
       indicatorColor: colorScheme.surfaceTint,
       dividerColor: colorScheme.shadow,
@@ -49,7 +49,7 @@ class CalendarThemeData {
     onSecondary: Color(0xFF322942),
     onSurface: Color(0xFF241E30),
     brightness: Brightness.light,
-    surfaceTint: Color(0xffff3b31),
+    surfaceTint: Color(0xffffc842),
     shadow: Color(0xffdbdbdb),
   );
 
@@ -68,7 +68,7 @@ class CalendarThemeData {
     onSecondary: _darkFillColor,
     onSurface: _darkFillColor,
     brightness: Brightness.dark,
-    surfaceTint: Color(0xffff453b),
+    surfaceTint: Color(0xffce912c),
     shadow: Color(0xff615957),
   );
 }

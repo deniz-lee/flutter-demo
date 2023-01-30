@@ -1,5 +1,5 @@
 // ignore_for_file: library_prefixes
-import 'package:flutter_demo/tools/extentions.dart';
+import 'package:flutter_demo/tools/extensions.dart';
 import 'package:googleapis/calendar/v3.dart' as Calendar;
 
 class EventModel {

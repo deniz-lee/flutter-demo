@@ -15,8 +15,7 @@ class GridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor =
-        Theme.of(context).colorScheme.primary;
+    Color textColor = Theme.of(context).colorScheme.primary;
     if (_dateTime?.weekday == DateTime.sunday) {
       textColor = CalendarColors.summary(context, CalendarColorType.red);
     }
@@ -34,7 +33,7 @@ class GridCell extends StatelessWidget {
         width: 20,
         height: 20,
         decoration: BoxDecoration(
-            color:Theme.of(context).highlightColor,
+            color: Theme.of(context).highlightColor,
             borderRadius: BorderRadius.circular(20)),
       ));
     }
@@ -65,7 +64,7 @@ class GridCell extends StatelessWidget {
 
     return LayoutBuilder(builder: (context, constraints) {
       OnGridCellSizeChange? onChange = _onChange;
-      if(onChange != null) {
+      if (onChange != null) {
         onChange(Size(constraints.maxWidth, constraints.maxHeight));
       }
       return DecoratedBox(

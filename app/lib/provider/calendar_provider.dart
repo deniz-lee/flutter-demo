@@ -10,9 +10,7 @@ import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:intl/intl.dart';
 
-enum ProviderState {
-  none, loading, done
-}
+enum ProviderState { none, loading, done }
 
 class CalendarProvider extends ChangeNotifier {
   GoogleSignIn? _googleSignIn;
@@ -23,6 +21,7 @@ class CalendarProvider extends ChangeNotifier {
   ProviderState _state = ProviderState.none;
 
   Map<String, List<EventModel>?> get events => _events;
+
   ProviderState get state => _state;
 
   CalendarProvider(BuildContext context);
@@ -161,6 +160,7 @@ extension DummyProvider on CalendarProvider {
     Future<List<EventModel>>? calendarEvents = dummyEventsForCalendarId();
     calendarEvents.then((List<EventModel> events) {
       _events = reorderCalendarEventsByDateTime(events);
+      _state = ProviderState.done;
       notifyListeners();
     });
   }
@@ -224,7 +224,6 @@ extension DummyProvider on CalendarProvider {
 }
 
 extension LoadingDialogProvider on CalendarProvider {
-
   void onLoadingDialog(BuildContext context, bool show) {
     if (show) {
       showDialog(

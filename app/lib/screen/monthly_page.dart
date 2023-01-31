@@ -12,13 +12,10 @@ class MonthlyPage extends StatefulWidget {
 }
 
 class _MonthlyPageState extends State<MonthlyPage> {
-  late CalendarProvider? _calendarProvider;
-
   @override
   Widget build(BuildContext context) {
-    _calendarProvider = Provider.of<CalendarProvider>(context);
-    if (_calendarProvider?.state == ProviderState.done) {
-      _calendarProvider?.onLoadingDialog(context, false);
+    if (context.watch<CalendarProvider>().state == ProviderState.done) {
+      context.read<CalendarProvider>().onLoadingDialog(context, false);
     }
     return Scaffold(
       body: const GridWidget(),
@@ -26,8 +23,8 @@ class _MonthlyPageState extends State<MonthlyPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SignInButton(() {
-            _calendarProvider?.onLoadingDialog(context, true);
-            _calendarProvider?.update();
+            context.read<CalendarProvider>().onLoadingDialog(context, true);
+            context.read<CalendarProvider>().update();
           }),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.

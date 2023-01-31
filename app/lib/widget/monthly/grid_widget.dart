@@ -36,10 +36,10 @@ class _GridWidgetState extends State<GridWidget> {
 
   void _updateAppBarDateIfNeeded() {
     if (!_controller.hasClients) {
-      return ;
+      return;
     }
-    if (_gridCellSize.width == 0 || _gridCellSize.height == 0 ) {
-      return ;
+    if (_gridCellSize.width == 0 || _gridCellSize.height == 0) {
+      return;
     }
     int rowIdx = _controller.offset ~/ _gridCellSize.height;
     int days = rowIdx * 7 + 7;
@@ -54,7 +54,7 @@ class _GridWidgetState extends State<GridWidget> {
 
   void _addGridCellCountIfNeeded() {
     if (!_controller.hasClients) {
-      return ;
+      return;
     }
     _updateAppBarDateIfNeeded();
     if (_controller.position.maxScrollExtent == _controller.offset) {
@@ -92,7 +92,7 @@ class _GridWidgetState extends State<GridWidget> {
             final targetDate = startDate.add(Duration(days: index));
             String formattedDate = DateFormat('yyyy-MM-dd').format(targetDate);
             List<EventModel>? events =
-                Provider.of<CalendarProvider>(context).events[formattedDate];
+                context.watch<CalendarProvider>().events[formattedDate];
             OnGridCellSizeChange? onChange;
             if (index == 0) {
               onChange = _didGridCellSizeChange;

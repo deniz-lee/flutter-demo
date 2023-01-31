@@ -12,7 +12,8 @@ class PageAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     DateTime dateTime = _dateTime ?? DateTime(DateTime.now().year, 1, 1);
-    String title = "${DateFormat.MMM().format(dateTime)} ${dateTime.year.toString()}";
+    String title =
+        "${DateFormat.MMM().format(dateTime)} ${dateTime.year.toString()}";
 
     return AppBar(
       title: null,

@@ -21,8 +21,7 @@ class ScrollWidget extends StatefulWidget {
 class _ScrollWidgetState extends State<ScrollWidget> {
   late DateTime _dateTime;
   final ScrollController _scrollController = ScrollController(
-      initialScrollOffset: Static.dailyScrollOffset_,
-      keepScrollOffset: true);
+      initialScrollOffset: Static.dailyScrollOffset_, keepScrollOffset: true);
 
   @override
   void initState() {
@@ -108,9 +107,7 @@ extension _DividerExtension on _ScrollWidgetState {
     List<Widget> children = [];
     for (int i = 0; i < dailyItemCount_; i++) {
       final targetDate = startDate.add(Duration(hours: i));
-      double height = i < dailyItemCount_ - 1
-          ? dailyItemHeight_
-          : 20;
+      double height = i < dailyItemCount_ - 1 ? dailyItemHeight_ : 20;
       Widget widget = HourlyDivider(constraints, targetDate, height);
       children.add(widget);
     }

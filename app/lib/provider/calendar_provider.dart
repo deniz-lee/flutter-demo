@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart';
 import 'package:flutter_demo/model/event.dart';
-import 'package:flutter_demo/plugin/GoogleSignIn-macOS/google_sign_in_macos.dart';
+// import 'package:flutter_demo/plugin/GoogleSignIn-macOS/google_sign_in_macos.dart';
 import 'package:flutter_demo/tools/extensions.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
@@ -30,7 +30,7 @@ class CalendarProvider extends ChangeNotifier {
       scopes: <String>[CalendarApi.calendarReadonlyScope],
       clientId: googleClientId_,
     );
-    GoogleSignInMacOS.registerWith();
+    // GoogleSignInMacOS.registerWith();
     final GoogleSignInAccount? googleUser = await _googleSignIn?.signIn();
     return googleUser;
   }

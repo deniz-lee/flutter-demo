@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart';
 import 'package:flutter_demo/provider/calendar_provider.dart';
 import 'package:flutter_demo/screen/daily_page.dart';
-import 'package:flutter_demo/screen/montly_page.dart';
+import 'package:flutter_demo/screen/monthly_page.dart';
 import 'package:flutter_demo/themes/calendar_theme_data.dart';
 import 'package:provider/provider.dart';
 

@@ -17,13 +17,16 @@ class _DailyPageState extends State<DailyPage> {
   @override
   Widget build(BuildContext context) {
     _calendarProvider = Provider.of<CalendarProvider>(context);
-
+    if (_calendarProvider?.state == ProviderState.done) {
+      _calendarProvider?.onLoadingDialog(context, false);
+    }
     return Scaffold(
       body: const PagerWidget(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SignInButton(() {
+            _calendarProvider?.onLoadingDialog(context, true);
             _calendarProvider?.update();
           }),
         ],

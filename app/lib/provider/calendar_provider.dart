@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart';
 import 'package:flutter_demo/model/event.dart';
-// import 'package:flutter_demo/plugin/GoogleSignIn-macOS/google_sign_in_macos.dart';
+import 'package:flutter_demo/plugin/GoogleSignIn-macOS/google_sign_in_macos.dart';
 import 'package:flutter_demo/tools/extensions.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
@@ -20,8 +20,10 @@ class CalendarProvider extends ChangeNotifier {
   CalendarApi? _calendarApi;
   CalendarList? _calendarList;
   late Map<String, List<EventModel>?> _events = {};
+  ProviderState _state = ProviderState.none;
 
   Map<String, List<EventModel>?> get events => _events;
+  ProviderState get state => _state;
 
   CalendarProvider(BuildContext context);
 
@@ -30,7 +32,10 @@ class CalendarProvider extends ChangeNotifier {
       scopes: <String>[CalendarApi.calendarReadonlyScope],
       clientId: googleClientId_,
     );
-    // GoogleSignInMacOS.registerWith();
+    GoogleSignInMacOS.registerWith();
+    if (kDebugMode) {
+      print("[CalendarProvider] getGoogleSignInAccount: $googleClientId_");
+    }
     final GoogleSignInAccount? googleUser = await _googleSignIn?.signIn();
     return googleUser;
   }
@@ -52,11 +57,17 @@ class CalendarProvider extends ChangeNotifier {
     if (id == null || id.isEmpty) {
       return [];
     }
+    if (kDebugMode) {
+      print("[CalendarProvider] eventsForCalendarId: $id");
+    }
     Events? events = await _calendarApi?.events.list(id);
     return events?.items ?? [];
   }
 
   update() {
+    _state = ProviderState.loading;
+    notifyListeners();
+
     if (useDummyDataSource_) {
       updateWithDummyData();
       return;
@@ -99,6 +110,7 @@ class CalendarProvider extends ChangeNotifier {
     }
     collectAllEvents(_calendarList).then((List<EventModel> events) {
       _events = reorderCalendarEventsByDateTime(events);
+      _state = ProviderState.done;
       notifyListeners();
     });
   }
@@ -208,5 +220,36 @@ extension DummyProvider on CalendarProvider {
           calendarId: "dummy",
           colorType: CalendarColorType.red),
     ];
+  }
+}
+
+extension LoadingDialogProvider on CalendarProvider {
+
+  void onLoadingDialog(BuildContext context, bool show) {
+    if (show) {
+      showDialog(
+          useRootNavigator: false,
+          barrierDismissible: false,
+          context: context,
+          builder: (_) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 15),
+                    Text('Loading...')
+                  ],
+                ),
+              ),
+            );
+          });
+      return;
+    } else {
+      Navigator.of(context).pop();
+      _state = ProviderState.none;
+    }
   }
 }

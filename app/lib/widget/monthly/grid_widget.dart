@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/constants.dart';
 import 'package:flutter_demo/model/event.dart';
@@ -75,6 +76,9 @@ class _GridWidgetState extends State<GridWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print("[GridWidget] build");
+    }
     return Scaffold(
       appBar: PageAppBar(_appBarDateTime),
       body: GridView.builder(

@@ -149,7 +149,7 @@ extension DummyProvider on CalendarProvider {
     Future<List<EventModel>>? calendarEvents = dummyEventsForCalendarId();
     calendarEvents.then((List<EventModel> events) {
       _events = reorderCalendarEventsByDateTime(events);
-      // notifyListeners();
+      notifyListeners();
     });
   }
 

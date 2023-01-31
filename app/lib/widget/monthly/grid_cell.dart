@@ -16,7 +16,7 @@ class GridCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color textColor =
-        Theme.of(context).textTheme.bodyText1?.color ?? Colors.black;
+        Theme.of(context).colorScheme.primary;
     if (_dateTime?.weekday == DateTime.sunday) {
       textColor = CalendarColors.summary(context, CalendarColorType.red);
     }

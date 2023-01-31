@@ -1,9 +1,9 @@
 // Application Properties
 const double responsiveWidthDivergingPoint_ = 750;
-
+// keytool -keystore ~/project/sktelecom/study/flutter-demo/app/android/app/debug.keystore -list -v
 // Calendar Provider Properties
-const String googleClientId_ =
-    "576251505485-06p12kgseshnb4f6icmqo626a89iu1un.apps.googleusercontent.com";
+// const String googleClientId_ = "576251505485-06p12kgseshnb4f6icmqo626a89iu1un.apps.googleusercontent.com";
+const String googleClientId_ ="576251505485-1l58k5d65ae5ghst7pujra72bkar1mli.apps.googleusercontent.com";
 const bool useDummyDataSource_ = false;
 
 // Calender Widget Properties

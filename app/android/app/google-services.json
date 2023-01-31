@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "576251505485",
+    "project_id": "calendardemo-374204",
+    "storage_bucket": "calendardemo-374204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576251505485:android:3ba66acb7b069da7bf2504",
+        "android_client_info": {
+          "package_name": "com.example.flutter.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "576251505485-1l58k5d65ae5ghst7pujra72bkar1mli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter.demo",
+            "certificate_hash": "b2bb4cf75cd52bdbef1d19752dc98e2389790981"
+          }
+        },
+        {
+          "client_id": "576251505485-ln9gfvgucclb9qvg52m4vnth11ofehph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3tT9vWe8ju6yVde6WVsZqiUiI57hRKOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "576251505485-ln9gfvgucclb9qvg52m4vnth11ofehph.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "576251505485-06p12kgseshnb4f6icmqo626a89iu1un.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sktelecom.flutter.demo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,7 +9,7 @@ class DailyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.watch<CalendarProvider>().state == ProviderState.done) {
+    if (context.select((CalendarProvider value) => value.state) == ProviderState.done) {
       context.read<CalendarProvider>().onLoadingDialog(context, false);
     }
     return Scaffold(

@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 class PageAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   final Size preferredSize = const Size.fromHeight(50.0);
-
   final DateTime? _dateTime;
 
   const PageAppBar(this._dateTime, {super.key});

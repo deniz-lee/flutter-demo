@@ -11,7 +11,7 @@ class EventCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 20,
-      padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
+      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
       child: DecoratedBox(
           decoration: BoxDecoration(
               color: CalendarColors.background(context, _event.colorType),

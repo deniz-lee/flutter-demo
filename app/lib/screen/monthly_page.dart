@@ -4,14 +4,9 @@ import 'package:flutter_demo/widget/common/sign_in_button.dart';
 import 'package:flutter_demo/widget/monthly/grid_widget.dart';
 import 'package:provider/provider.dart';
 
-class MonthlyPage extends StatefulWidget {
+class MonthlyPage extends StatelessWidget {
   const MonthlyPage({Key? key}) : super(key: key);
 
-  @override
-  State<MonthlyPage> createState() => _MonthlyPageState();
-}
-
-class _MonthlyPageState extends State<MonthlyPage> {
   @override
   Widget build(BuildContext context) {
     if (context.watch<CalendarProvider>().state == ProviderState.done) {
